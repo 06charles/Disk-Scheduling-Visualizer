@@ -201,15 +201,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               child: Column(
                 children: [
-                  HeroSection(
-                    onStart: () {
-                      _scrollController.animateTo(
-                        400,
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.easeInOut,
-                      );
-                    },
-                  ),
+                  HeroSection(),
                   const SizedBox(height: 40),
                   InputPanel(
                     queueController: _queueController,
@@ -284,9 +276,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     AnimatedOpacity(
                       opacity: _showComparison ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 800),
-                      child: SizedBox(
-                        height: 600,
-                        child: ComparisonChart(results: _allResults!),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                List<int> queue = _queueController.text.split(',').map((e) => int.parse(e.trim())).toList();
+                                int head = int.parse(_headController.text.trim());
+                                int maxSize = int.parse(_maxSizeController.text.trim());
+                                PdfGenerator.generateComparisonPdf(
+                                  results: _allResults!,
+                                  queue: queue,
+                                  initialHead: head,
+                                  maxDiskSize: maxSize,
+                                );
+                              },
+                              icon: const Icon(Icons.picture_as_pdf),
+                              label: const Text('Export Comparison Report'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white.withOpacity(0.7),
+                                foregroundColor: Theme.of(context).colorScheme.primary,
+                                elevation: 0,
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                side: BorderSide(color: Colors.white.withOpacity(0.8), width: 1.5),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 600,
+                            child: ComparisonChart(results: _allResults!),
+                          ),
+                        ],
                       ),
                     ),
                   ],

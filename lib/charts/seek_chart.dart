@@ -118,29 +118,6 @@ class _SeekChartState extends State<SeekChart> {
               ),
               Row(
                 children: [
-                  Text('Speed:', style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color)),
-                  SizedBox(
-                    width: 100,
-                    child: Slider(
-                      value: _speedMs,
-                      min: 100,
-                      max: 2000,
-                      divisions: 19,
-                      activeColor: Theme.of(context).colorScheme.secondary,
-                      onChanged: (val) {
-                        setState(() {
-                          _speedMs = val;
-                        });
-                        if (!_isPaused) _scheduleNextTick();
-                      },
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(_isPaused ? Icons.play_arrow : Icons.pause),
-                    color: Theme.of(context).colorScheme.secondary,
-                    onPressed: _currentIndex < widget.seekSequence.length ? _togglePause : null,
-                  ),
-                  const SizedBox(width: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
